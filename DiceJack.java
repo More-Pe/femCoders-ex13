@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class DiceJack {
     public static void main(String[] args) {
 
@@ -18,16 +20,44 @@ public class DiceJack {
         Requisitos no funcionales (atributos de calidad):
         - Definir las 4 funciones descritas abajo.
         - En el método main escribir el programa (usar condicionales, reusar las funciones creadas, pedir al usuario que ingrese datos y recogerlos).
-      
-        Pasos:
-        - Pedir al usuario que escoja 3 números.
-        - Si el usuario escoge un número fuera del rango, salir del programa (mira en los recursos system exit).
-        - Si los números son correctos, pedir al usuario si desea lanzar dados.
-        - Si el usuario dice que no, salir del programa.
-        - Si el usuario dice que si, lanzar dados, hacer los cálculos que indiquen si el usuario ganó o perdió.
-        - Imprimir la suma de los números escogidos por el usuario y la suma de los números que salieron en los dados.
-        - Imprimir si el usuario ganó o perdió.
-        */
+      */
+        //Pasos:
+        // - Pedir al usuario que escoja 3 números.
+        Scanner numbers = new Scanner(System.in);
+        System.out.println("Escoge 3 números del 1 al 6 inclusive");
+        int num1 = numbers.nextInt();
+        int num2 = numbers.nextInt();
+        int num3 = numbers.nextInt();
+        numbers.nextLine();
+        //- Si el usuario escoge un número fuera del rango, salir del programa (mira en los recursos system exit).
+        if(isLessThanOne(num1, num2, num3) || isHigherThanSix(num1, num2, num3)){
+            System.out.println("Uno o más números están fuera del rango");
+            System.exit(0);
+        }
+        //- Si los números son correctos, pedir al usuario si desea lanzar dados.
+        System.out.println("¿Deseas lanzar los dados? si/no");
+        String answer = numbers.nextLine().toLowerCase();
+        //- Si el usuario dice que no, salir del programa.
+        if (!answer.equals("si")){
+            System.out.println("Has decidido no jugar o tu respuesta no es válida. Fin del juego.");
+            System.exit(0);
+        }
+        //- Si el usuario dice que si, lanzar dados, hacer los cálculos que indiquen si el usuario ganó o perdió.
+        int dice1 = rollDice();
+        int dice2 = rollDice();
+        int dice3 = rollDice();
+        int sumNumbers = num1 + num2 + num3;
+        int sumDiceRolls = dice1 + dice2 + dice3;
+        //- Imprimir la suma de los números escogidos por el usuario y la suma de los números que salieron en los dados.
+        System.out.println("Escogiste los siguientes números: " + num1 + ", " + num2 + ", y " + num3 + ". La suma es igual a: " + sumNumbers);
+        System.out.println("Los números que salieron en los dados son: " + dice1 + ", " + dice2 + ", y " + dice3 + ". La suma es igual a: " + sumDiceRolls);
+        //- Imprimir si el usuario ganó o perdió.
+        if (userWon(sumNumbers, sumDiceRolls)){
+            System.out.println("¡Has ganado, felicidades!");
+        } else{
+            System.out.println("Lo siento, has perdido.");
+        }
+        numbers.close();
     }
 
 
@@ -45,7 +75,9 @@ public class DiceJack {
      */
     
     // Escribe tu código aquí
-
+    public static boolean isLessThanOne(int num1, int num2, int num3){
+        return num1 < 1 || num2 < 1 || num3 < 1;
+    }
 
     /**
      * 
@@ -61,7 +93,9 @@ public class DiceJack {
      */
 
     // Escribe tu código aquí
-
+    public static boolean isHigherThanSix(int num1, int num2, int num3){
+        return num1 > 6 || num2 > 6 || num3 > 6;
+    }
 
     /**
      * 
@@ -76,6 +110,9 @@ public class DiceJack {
      */
 
     // Escribe tu código aquí
+    public static boolean userWon(int sumNumbers, int sumDiceRolls){
+        return sumNumbers > sumDiceRolls && (sumNumbers-sumDiceRolls) < 5;
+    }
 
 
     /**
@@ -88,6 +125,7 @@ public class DiceJack {
      */
 
     // Escribe tu código aquí
-
-
+    public static int rollDice(){
+        return (int) (Math.random() * 6) + 1;
+    }
 }
